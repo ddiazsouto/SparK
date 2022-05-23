@@ -1,0 +1,13 @@
+key = str()
+storage_account_name = str()
+
+key_storage = "fs.azure.account.key." + storage_account_name + ".blob.core.windows.net"
+
+dbutils.fs.mount(
+  source = "wasbs://housing-datasets@danielsets.blob.core.windows.net",
+  mount_point = "/mnt/Data",
+  extra_configs = {key_storage: key})
+  
+
+data = "/mnt/Data"
+df=spark.read.format("csv").option("header","true").load(data)
